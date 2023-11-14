@@ -487,14 +487,22 @@ qm set $VMID \
 msg_ok "Created a k0s VM ${CL}${BL}(${HN})"
 qm start $VMID
 sleep 15
-msg_ok "Network interfaces are being configured as OpenWrt initiates."
+msg_ok "Post-install setup for k0s."
 send_line_to_vm ""
 send_line_to_vm "apt update"
 send_line_to_vm "hostnamectl hostname k0s"
-send_line_to_vm "sed -i "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config"
-send_line_to_vm "ssh-keygen -A"
-send_line_to_vm "systemctl restart sshd"
+send_line_to_vm "curl -sSLf https://get.k0s.sh | sh"
+send_line_to_vm "mkdir -p /etc/k0s"
+send_line_to_vm "k0s config create > /etc/k0s/k0s.yaml"
+send_line_to_vm "k0s install controller --single"
+send_line_to_vm "k0s start"
+#send_line_to_vm "sed -i \"s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g\" /etc/ssh/sshd_config"
+#send_line_to_vm "ssh-keygen -A"
+#send_line_to_vm "systemctl restart sshd"
 send_line_to_vm "halt"
+until qm status $VMID | grep -q "stopped"; do
+  sleep 2
+done
 if [ "$START_VM" == "yes" ]; then
   msg_info "Starting k0s VM"
   qm start $VMID
