@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -39,6 +39,8 @@ function default_settings() {
   BRG="vmbr0"
   NET="dhcp"
   GATE=""
+  APT_CACHER=""
+  APT_CACHER_IP=""
   DISABLEIP6="no"
   MTU=""
   SD=""
@@ -53,10 +55,10 @@ function default_settings() {
 function update_script() {
 header_info
 if [[ ! -d /etc/pihole ]]; then msg_error "No ${APP} Installation Found!"; exit; fi
-msg_info "Updating ${APP} LXC"
-apt-get update &>/dev/null
-apt-get -y upgrade &>/dev/null
-msg_ok "Updated Successfully"
+msg_info "Updating ${APP}"
+set +e
+pihole -up
+msg_ok "Updated ${APP}"
 exit
 }
 

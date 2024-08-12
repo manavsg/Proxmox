@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -19,17 +19,20 @@ $STD apt-get install -y sudo
 $STD apt-get install -y mc
 $STD apt-get install -y par2
 $STD apt-get install -y p7zip-full
-wget -q http://http.us.debian.org/debian/pool/non-free/u/unrar-nonfree/unrar_7.0.2-1_amd64.deb
-$STD dpkg -i unrar_7.0.2-1_amd64.deb
-rm unrar_7.0.2-1_amd64.deb
+cat <<EOF >/etc/apt/sources.list.d/non-free.list
+deb http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+EOF
+$STD apt-get update
+$STD apt-get install -y unrar
+rm /etc/apt/sources.list.d/non-free.list
 msg_ok "Installed Dependencies"
 
 msg_info "Updating Python3"
 $STD apt-get install -y \
-  python3 \
   python3-dev \
   python3-pip
 $STD apt-get install -y python3-setuptools
+rm -rf /usr/lib/python3.*/EXTERNALLY-MANAGED
 msg_ok "Updated Python3"
 
 msg_info "Installing SABnzbd"
@@ -59,6 +62,6 @@ motd_ssh
 customize
 
 msg_info "Cleaning up"
-$STD apt-get autoremove
-$STD apt-get autoclean
+$STD apt-get -y autoremove
+$STD apt-get -y autoclean
 msg_ok "Cleaned"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -39,6 +39,8 @@ function default_settings() {
   BRG="vmbr0"
   NET="dhcp"
   GATE=""
+  APT_CACHER=""
+  APT_CACHER_IP=""
   DISABLEIP6="no"
   MTU=""
   SD=""
@@ -62,8 +64,10 @@ cd /opt/pingvin-share
 git fetch --tags
 git checkout $(git describe --tags `git rev-list --tags --max-count=1`) &>/dev/null
 cd backend
+npm install &>/dev/null
 npm run build &>/dev/null
 cd ../frontend
+npm install &>/dev/null
 npm run build &>/dev/null
 msg_ok "Updated Pingvin Share"
 

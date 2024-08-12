@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -25,7 +25,11 @@ $STD apt-get install -y libjpeg-dev
 $STD apt-get install -y libtiff-dev
 $STD apt-get install -y imagemagick
 $STD apt-get install -y darktable
+$STD apt-get install -y rawtherapee
+$STD apt-get install -y libvips42
 
+echo 'export PATH=/usr/local:$PATH' >>~/.bashrc
+export PATH=/usr/local:$PATH
 msg_ok "Installed Dependencies"
 
 msg_info "Installing PhotoPrism (Patience)"
@@ -47,6 +51,7 @@ PHOTOPRISM_STORAGE_PATH='/opt/photoprism/storage'
 PHOTOPRISM_ORIGINALS_PATH='/opt/photoprism/photos/originals'
 PHOTOPRISM_IMPORT_PATH='/opt/photoprism/photos/import'
 EOF
+ln -sf /opt/photoprism/bin/photoprism /usr/local/bin/photoprism
 msg_ok "Installed PhotoPrism"
 
 msg_info "Creating Service"
@@ -73,6 +78,6 @@ motd_ssh
 customize
 
 msg_info "Cleaning up"
-$STD apt-get autoremove
-$STD apt-get autoclean
+$STD apt-get -y autoremove
+$STD apt-get -y autoclean
 msg_ok "Cleaned"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -67,7 +67,7 @@ function update_container() {
   alpine) pct exec "$container" -- ash -c "apk update && apk upgrade" ;;
   archlinux) pct exec "$container" -- bash -c "pacman -Syyu --noconfirm" ;;
   fedora | rocky | centos | alma) pct exec "$container" -- bash -c "dnf -y update && dnf -y upgrade" ;;
-  ubuntu | debian | devuan) pct exec "$container" -- bash -c "apt-get update 2>/dev/null | grep 'packages.*upgraded'; apt list --upgradable && apt-get -yq dist-upgrade" ;;
+  ubuntu | debian | devuan) pct exec "$container" -- bash -c "apt-get update 2>/dev/null | grep 'packages.*upgraded'; apt list --upgradable && apt-get -yq dist-upgrade 2>&1; rm -rf /usr/lib/python3.*/EXTERNALLY-MANAGED" ;;
   esac
 }
 
@@ -101,7 +101,7 @@ for container in $(pct list | awk '{if(NR>1) print $1}'); do
 done
 wait
 header_info
-echo -e "${GN}The process is complete, and the selected containers have been updated.${CL}\n"
+echo -e "${GN}The process is complete, and the containers have been successfully updated.${CL}\n"
 if [ "${#containers_needing_reboot[@]}" -gt 0 ]; then
     echo -e "${RD}The following containers require a reboot:${CL}"
     for container_name in "${containers_needing_reboot[@]}"; do

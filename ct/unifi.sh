@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -17,6 +17,10 @@ cat <<"EOF"
 EOF
 }
 header_info
+if ! grep -q -m1 'avx[^ ]*' /proc/cpuinfo; then
+  echo "AVX instruction set is not supported on this CPU."
+  exit
+fi
 echo -e "Loading..."
 APP="Unifi"
 var_disk="8"
@@ -39,6 +43,8 @@ function default_settings() {
   BRG="vmbr0"
   NET="dhcp"
   GATE=""
+  APT_CACHER=""
+  APT_CACHER_IP=""
   DISABLEIP6="no"
   MTU=""
   SD=""

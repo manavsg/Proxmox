@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -12,15 +12,6 @@ catch_errors
 setting_up_container
 network_check
 update_os
-
-msg_info "Installing Python3"
-$STD apt-get install -y --no-install-recommends \
-  python3 \
-  python3-pip \
-  python3-dev \
-  python3-setuptools \
-  python3-wheel
-msg_ok "Installed Python3"
 
 msg_info "Installing Dependencies (Patience)"
 $STD apt-get install -y --no-install-recommends \
@@ -48,6 +39,15 @@ $STD apt-get install -y --no-install-recommends \
   sudo \
   mc
 msg_ok "Installed Dependencies"
+
+msg_info "Installing Python3 Dependencies"
+$STD apt-get install -y --no-install-recommends \
+  python3 \
+  python3-pip \
+  python3-dev \
+  python3-setuptools \
+  python3-wheel
+msg_ok "Installed Python3 Dependencies"
 
 msg_info "Installing OCR Dependencies (Patience)"
 $STD apt-get install -y --no-install-recommends \
@@ -81,9 +81,6 @@ $STD tar -xf paperless-ngx-$Paperlessngx.tar.xz -C /opt/
 mv paperless-ngx paperless
 rm paperless-ngx-$Paperlessngx.tar.xz
 cd /opt/paperless
-sed -i 's/scipy==1.8.1/scipy==1.10.1/g' requirements.txt
-## python 3.10+ doesn't like the '-e', so we remove it from this the requirements file
-sed -i -e 's|-e git+https://github.com/paperless-ngx/django-q.git|git+https://github.com/paperless-ngx/django-q.git|' /opt/paperless/requirements.txt
 $STD pip install --upgrade pip
 $STD pip install -r requirements.txt
 curl -s -o /opt/paperless/paperless.conf https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/main/paperless.conf.example
@@ -93,6 +90,7 @@ sed -i -e "s|#PAPERLESS_CONSUMPTION_DIR=../consume|PAPERLESS_CONSUMPTION_DIR=/op
 sed -i -e "s|#PAPERLESS_DATA_DIR=../data|PAPERLESS_DATA_DIR=/opt/paperless/data|" /opt/paperless/paperless.conf
 sed -i -e "s|#PAPERLESS_MEDIA_ROOT=../media|PAPERLESS_MEDIA_ROOT=/opt/paperless/media|" /opt/paperless/paperless.conf
 sed -i -e "s|#PAPERLESS_STATICDIR=../static|PAPERLESS_STATICDIR=/opt/paperless/static|" /opt/paperless/paperless.conf
+echo "${Paperlessngx}" >/opt/${APPLICATION}_version.txt
 msg_ok "Installed Paperless-ngx"
 
 msg_info "Installing Natural Language Toolkit (Patience)"
@@ -105,7 +103,10 @@ DB_USER=paperless
 DB_PASS="$(openssl rand -base64 18 | cut -c1-13)"
 SECRET_KEY="$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)"
 $STD sudo -u postgres psql -c "CREATE ROLE $DB_USER WITH LOGIN PASSWORD '$DB_PASS';"
-$STD sudo -u postgres psql -c "CREATE DATABASE $DB_NAME WITH OWNER $DB_USER TEMPLATE template0;"
+$STD sudo -u postgres psql -c "CREATE DATABASE $DB_NAME WITH OWNER $DB_USER ENCODING 'UTF8' TEMPLATE template0;"
+$STD sudo -u postgres psql -c "ALTER ROLE $DB_USER SET client_encoding TO 'utf8';"
+$STD sudo -u postgres psql -c "ALTER ROLE $DB_USER SET default_transaction_isolation TO 'read committed';"
+$STD sudo -u postgres psql -c "ALTER ROLE $DB_USER SET timezone TO 'UTC'"
 echo "" >>~/paperless.creds
 echo -e "Paperless-ngx Database User: \e[32m$DB_USER\e[0m" >>~/paperless.creds
 echo -e "Paperless-ngx Database Password: \e[32m$DB_PASS\e[0m" >>~/paperless.creds
@@ -171,6 +172,7 @@ cat <<EOF >/etc/systemd/system/paperless-task-queue.service
 [Unit]
 Description=Paperless Celery Workers
 Requires=redis.service
+After=postgresql.service
 
 [Service]
 WorkingDirectory=/opt/paperless/src
@@ -219,6 +221,6 @@ customize
 
 msg_info "Cleaning up"
 rm -rf /opt/paperless/docker
-$STD apt-get autoremove
-$STD apt-get autoclean
+$STD apt-get -y autoremove
+$STD apt-get -y autoclean
 msg_ok "Cleaned"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -36,10 +36,15 @@ $STD npm install -g yarn
 msg_ok "Installed Node.js/Yarn"
 
 msg_info "Installing Homarr (Patience)"
-git clone -q https://github.com/ajnart/homarr.git /opt/homarr
+$STD git clone -b dev https://github.com/ajnart/homarr.git /opt/homarr
+cat <<EOF >/opt/homarr/.env
+DATABASE_URL="file:./database/db.sqlite"
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="$(openssl rand -base64 32)"
+NEXT_PUBLIC_DISABLE_ANALYTICS="true"
+DEFAULT_COLOR_SCHEME="dark"
+EOF
 cd /opt/homarr
-cp -p /opt/homarr/.env.example /opt/homarr/.env
-sed -i 's|NEXTAUTH_SECRET="[^"]*"|NEXTAUTH_SECRET="'"$(openssl rand -base64 32)"'"|' /opt/homarr/.env
 $STD yarn install
 $STD yarn build
 $STD yarn db:migrate
@@ -67,6 +72,6 @@ motd_ssh
 customize
 
 msg_info "Cleaning up"
-$STD apt-get autoremove
-$STD apt-get autoclean
+$STD apt-get -y autoremove
+$STD apt-get -y autoclean
 msg_ok "Cleaned"

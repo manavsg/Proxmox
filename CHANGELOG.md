@@ -1,9 +1,621 @@
-<!-- <p align="center"><a href="https://helper-scripts" rel="noreferrer" target="_blank"><img src="https://github-readme-stats.vercel.app/api?username=tteck&custom_title=Proxmox&nbsp;VE&nbsp;Helper&nbsp;Scripts&theme=transparent&ring_color=00b100&hide=issues,contribs&hide_border=true&card_width=550px&include_all_commits=true&rank_icon=percentile&show_icons=true&show=prs_merged,prs_merged_percentage"></a></p> -->
+<div align="center">
+  <a href="#">
+    <img src="https://raw.githubusercontent.com/tteck/Proxmox/main/misc/images/logo.png" height="100px" />
+ </a>
+</div>
+<h1 align="center">Changelog</h1>
 
-# Change Log
-**All notable changes to this project will be documented in this file.**<br>
+<h3 align="center">All notable changes to this project will be documented in this file.</h3>
+
+> [!WARNING]
+Be cautious of copycat or coat-tailing sites that exploit the project's popularity with potentially malicious intent. Please only trust information from https://Helper-Scripts.com/ or https://tteck.github.io/Proxmox/.
 
 - All LXC instances created using this repository come pre-installed with Midnight Commander, which is a command-line tool (`mc`) that offers a user-friendly file and directory management interface for the terminal environment.
+
+## 2024-08-06
+
+### Changed
+
+- **lldap LXC** [(View Source)](https://github.com/tteck/Proxmox/blob/main/install/lldap-install.sh)
+  - NEW Script
+
+## 2024-07-26
+
+### Changed
+
+- **Gitea LXC** [(View Source)](https://github.com/tteck/Proxmox/blob/main/install/gitea-install.sh)
+  - NEW Script
+
+## 2024-06-30
+
+### Changed
+
+- **All Scripts** [(Commit)](https://github.com/tteck/Proxmox/commit/39ea1d4a20b83c07d084ebafdc811eec3548f289)
+  - Requires Proxmox Virtual Environment version 8.1 or later.
+
+## 2024-06-27
+
+### Changed
+
+- **Kubo LXC** [(View Source)](https://github.com/tteck/Proxmox/blob/main/install/kubo-install.sh)
+  - NEW Script
+- **RabbitMQ LXC** [(View Source)](https://github.com/tteck/Proxmox/blob/main/install/rabbitmq-install.sh)
+  - NEW Script
+- **Scrutiny LXC**
+  - Removed from website, broken.
+
+## 2024-06-26
+
+### Changed
+
+- **Scrutiny LXC**
+  - NEW Script
+
+## 2024-06-14
+
+### Changed
+
+- **MySpeed LXC** [(View Source)](https://github.com/tteck/Proxmox/blob/main/install/myspeed-install.sh)
+  - NEW Script
+
+## 2024-06-13
+
+### Changed
+
+- **PeaNUT LXC** [(View Source)](https://github.com/tteck/Proxmox/blob/main/install/peanut-install.sh)
+  - NEW Script
+- **Website**
+  - If the Changelog has changed recently, the link on the website will pulse.
+- **Spoolman LXC** [(View Source)](https://github.com/tteck/Proxmox/blob/main/install/spoolman-install.sh)
+  - NEW Script
+
+## 2024-06-12
+
+### Changed
+
+- **MeTube LXC** [(View Source)](https://github.com/tteck/Proxmox/blob/main/install/metube-install.sh)
+  - NEW Script
+- **Matterbridge LXC** [(View Source)](https://github.com/tteck/Proxmox/blob/main/install/matterbridge-install.sh)
+  - NEW Script
+- **Website**
+  - Reopen the gh-pages site (https://tteck.github.io/Proxmox/) 
+
+## 2024-06-11
+
+### Changed
+
+- **Zabbix LXC** [(View Source)](https://github.com/tteck/Proxmox/blob/main/install/zabbix-install.sh)
+  - NEW Script
+
+## 2024-06-06
+
+### Changed
+
+- **Petio LXC** [(View Source)](https://github.com/tteck/Proxmox/blob/main/install/petio-install.sh)
+  - NEW Script
+- **Website**
+  - Important notices will now be displayed on the landing page.
+
+## 2024-06-04
+
+### Changed
+
+- **FlareSolverr LXC** [(View Source)](https://github.com/tteck/Proxmox/blob/main/install/flaresolverr-install.sh)
+  - NEW Script
+
+## 2024-05-31
+
+### Changed
+
+- **Advanced Settings** [(Commit)](https://github.com/tteck/Proxmox/commit/fc9dff220b4ea426d3a75178ad8accacae4683ca)
+  - Passwords are now masked
+
+## 2024-05-30
+
+### Changed
+
+- **Forgejo LXC**
+  - NEW Script
+
+## 2024-05-28
+
+### Changed
+
+- **Notifiarr LXC**
+  - NEW Script
+
+## 2024-05-25
+
+### Changed
+
+- **Threadfin LXC**
+  - NEW Script
+
+## 2024-05-23
+
+### Changed
+
+- **BunkerWeb LXC**
+  - NEW Script
+
+## 2024-05-20
+
+### Changed
+
+- **Traefik LXC**
+  - NEW Script
+
+## 2024-05-19
+
+### Changed
+
+- **NetBird**
+  - NEW Script
+- **Tailscale**
+  - Refactor Code
+
+## 2024-05-18
+
+### Changed
+
+- **MongoDB LXC**
+  - NEW Script
+
+## 2024-05-17
+
+### Changed
+
+- **New Website**
+  - We have officially moved to [Helper-Scripts.com](https://helper-scripts.com)
+
+## 2024-05-16
+
+### Changed
+
+- **iVentoy LXC**
+  - NEW Script
+
+## 2024-05-13
+
+### Changed
+
+- **Headscale LXC**
+  - NEW Script
+
+## 2024-05-11
+
+### Changed
+
+- **Caddy LXC**
+  - NEW Script
+
+## 2024-05-09
+
+### Changed
+
+- **Umami LXC**
+  - NEW Script
+
+## 2024-05-08
+
+### Changed
+
+- **Kernel Pin**
+  - NEW Script
+- **Home Assistant Core LXC**
+  - Ubuntu 24.04 ONLY
+
+## 2024-05-07
+
+### Changed
+
+- **Pocketbase LXC**
+  - NEW Script
+
+## 2024-05-05
+
+### Changed
+
+- **Fenrus LXC**
+  - NEW Script
+
+## 2024-05-02
+
+### Changed
+
+- **OpenMediaVault LXC**
+  - Set Debian 12 as default
+  - OpenMediaVault 7 (sandworm)
+
+## 2024-04-30
+
+### Changed
+
+- **Tdarr LXC**
+  - Default settings are now **Unprivileged**
+  - Unprivileged Hardware Acceleration
+
+## 2024-04-29
+
+### Changed
+
+- **ErsatzTV LXC**
+  - NEW Script
+
+## 2024-04-28
+
+### Changed
+
+- **Scrypted LXC**
+  - Unprivileged Hardware Acceleration
+- **Emby LXC**
+  - Unprivileged Hardware Acceleration
+
+## 2024-04-27
+
+### Changed
+
+- **Frigate LXC**
+  - Unprivileged Hardware Acceleration https://github.com/tteck/Proxmox/discussions/2711#discussioncomment-9244629
+- **Ubuntu 24.04 VM**
+  - NEW Script
+
+## 2024-04-26
+
+### Changed
+
+- **Glances**
+  - NEW Script
+
+## 2024-04-25
+
+### Changed
+
+- **Jellyfin LXC**
+  - Default settings are now **Unprivileged**
+  - Unprivileged Hardware Acceleration
+  - Groups are set automatically
+  - Checks for the existence of `/dev/dri/card0` if not found, use `/dev/dri/card1`. Set the GID to `44`
+  - Set the GID for `/dev/dri/renderD128` to `104`
+  - Not tested <8.1.11
+- **Plex LXC**
+  - Default settings are now **Unprivileged**
+  - Unprivileged Hardware Acceleration
+  - Groups are set automatically
+  - Checks for the existence of `/dev/dri/card0` if not found, use `/dev/dri/card1`. Set the GID to `44`
+  - Set the GID for `/dev/dri/renderD128` to `104`
+  - Not tested <8.1.11
+
+## 2024-04-24
+
+### Changed
+
+- **Traccar LXC**
+  - NEW Script
+- **Calibre-Web LXC**
+  - NEW Script
+
+## 2024-04-21
+
+### Changed
+
+- **Aria2 LXC**
+  - NEW Script
+
+## 2024-04-15
+
+### Changed
+
+- **Homarr LXC**
+  - Add back to website
+- **Umbrel LXC**
+  - Add back to website
+- **OpenMediaVault LXC**
+  - Add back to website
+
+## 2024-04-12
+
+### Changed
+
+- **OpenMediaVault LXC**
+  - Removed from website
+
+## 2024-04-09
+
+### Changed
+
+- **PairDrop LXC**
+  - Add back to website
+
+## 2024-04-05
+
+### Changed
+
+- **Medusa LXC**
+  - NEW Script
+- **WatchYourLAN LXC**
+  - NEW Script
+
+## 2024-04-04
+
+### Changed
+
+- **Actual Budget LXC**
+  - NEW Script
+
+## 2024-04-03
+
+### Changed
+
+- **LazyLibrarian LXC**
+  - NEW Script
+
+## 2024-04-01
+
+### Changed
+
+- **Frigate LXC**
+  - NEW Script
+
+## 2024-03-26
+
+### Changed
+
+- **MediaMTX LXC**
+  - NEW Script
+
+## 2024-03-25
+
+### Changed
+
+- **Proxmox VE Post Install**
+  - ~Requires Proxmox Virtual Environment Version 8.1.1 or later.~
+  - Requires Proxmox Virtual Environment Version 8.0 or later.
+- **Proxmox Backup Server LXC**
+  - NEW Script
+
+## 2024-03-24
+
+### Changed
+
+- **SmokePing LXC**
+  - NEW Script
+
+## 2024-03-13
+
+### Changed
+
+- **FlowiseAI LXC**
+  - NEW Script
+
+## 2024-03-11
+
+### Changed
+
+- **Wastebin LXC**
+  - NEW Script
+
+## 2024-03-08
+
+### Changed
+
+- **Proxmox VE Post Install**
+  - Requires Proxmox Virtual Environment Version 8.1.1 or later.
+
+## 2024-02-26
+
+### Changed
+
+- **Mafl LXC**
+  - NEW Script
+
+## 2024-02-23
+
+### Changed
+
+- **Tandoor Recipes LXC**
+  - NEW Script (Thanks @MickLesk)
+
+## 2024-02-21
+
+### Changed
+
+- **All scripts**
+  - As of today, the scripts require the Bash shell specifically. ([more info](https://github.com/tteck/Proxmox/discussions/2536))
+
+## 2024-02-19
+
+### Changed
+
+- **PairDrop LXC**
+  - Removed from the website ([more info](https://github.com/tteck/Proxmox/discussions/2516))
+
+## 2024-02-16
+
+### Changed
+
+- **Proxmox VE LXC Filesystem Trim**
+  - NEW Script ([more info](https://github.com/tteck/Proxmox/discussions/2505#discussion-6226037))
+
+## 2024-02-11
+
+### Changed
+
+- **HiveMQ CE LXC**
+  - NEW Script
+- **Apache-CouchDB LXC**
+  - NEW Script
+
+## 2024-02-06
+
+### Changed
+
+- **All Scripts**
+  - The scripts will only work with PVE7 Version 7.4-13 or later, or PVE8 Version 8.1.1 or later.
+
+## 2024-02-05
+
+### Changed
+
+- **Gokapi LXC**
+  - NEW Script
+- **Nginx Proxy Manager LXC**
+  - Option to install v2.10.4
+
+## 2024-02-04
+
+### Changed
+
+- **Pi-hole LXC**
+  - Option to add Unbound
+
+## 2024-02-02
+
+### Changed
+
+- **Readeck LXC**
+  - NEW Script
+
+## 2024-01-25
+
+### Changed
+
+- **PairDrop LXC**
+  - NEW Script
+
+## 2024-01-20
+
+### Changed
+
+- **Apache-Cassandra LXC**
+  - NEW Script
+- **Redis LXC**
+  - NEW Script
+
+## 2024-01-17
+
+### Changed
+
+- **ntfy LXC**
+  - NEW Script
+- **HyperHDR LXC**
+  - NEW Script
+
+## 2024-01-16
+
+### Changed
+
+- **Website Improvements**
+  - Refine and correct pointers.
+  - Change hover colors to intuitively indicate categories/items.
+  - Implement opening links in new tabs for better navigation.
+  - Enhance the Copy button to better indicate that the command has been successfully copied.
+  - Introduce a Clear Search button.
+  - While not directly related to the website, it's worth mentioning that the logo in newly created LXC notes now serves as a link to the website, conveniently opening in a new tab.
+
+## 2024-01-12
+
+### Changed
+
+- **Apt-Cacher-NG LXC**
+  - NEW Script
+- **New Feature**
+  - The option to utilize Apt-Cacher-NG (Advanced settings) when creating LXCs. The added functionality is expected to decrease bandwidth usage and expedite package installation and updates. https://github.com/tteck/Proxmox/discussions/2332
+
+## 2024-01-09
+
+### Changed
+
+- **Verbose mode**
+  - Only entries with `$STD` will be shown
+
+## 2024-01-07
+
+### Changed
+
+- **Stirling-PDF LXC**
+  - NEW Script
+- **SFTPGo LXC**
+  - NEW Script
+
+## 2024-01-04
+
+### Changed
+
+- **CommaFeed LXC**
+  - NEW Script
+
+## 2024-01-03
+
+### Changed
+
+- **Sonarr LXC**
+  - Breaking Change
+  - Complete recode
+  - https://github.com/tteck/Proxmox/discussions/1738#discussioncomment-8005107
+
+## 2024-01-01
+
+### Changed
+
+- **Gotify LXC**
+  - NEW Script
+
+## 2023-12-19
+
+### Changed
+
+- **Proxmox VE Netdata**
+  - NEW Script
+
+## 2023-12-10
+
+### Changed
+
+- **Homarr LXC**
+  - Removed, again.
+
+## 2023-12-02
+
+### Changed
+
+- **Runtipi LXC**
+  - NEW Script
+
+## 2023-12-01
+
+### Changed
+
+- **Mikrotik RouterOS VM**
+  - Now Mikrotik RouterOS CHR VM
+  - code refactoring
+  - update to CHR
+  - thanks to @NiccyB
+- **Channels DVR Server LXC**
+  - NEW Script
+
+## 2023-11-19
+
+### Changed
+
+- **Dockge LXC**
+  - NEW Script
+
+## 2023-11-18
+
+### Changed
+
+- **Ubuntu 22.04 VM**
+  - NEW Script
+
+## 2023-11-14
+
+### Changed
+
+- **TurnKey Nextcloud VM**
+  - NEW Script
+- **TurnKey ownCloud VM**
+  - NEW Script
 
 ## 2023-11-11
 

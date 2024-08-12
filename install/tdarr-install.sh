@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -17,29 +17,35 @@ msg_info "Installing Dependencies"
 $STD apt-get install -y curl
 $STD apt-get install -y sudo
 $STD apt-get install -y mc
+$STD apt-get install -y handbrake-cli
 msg_ok "Installed Dependencies"
 
+msg_info "Setting Up Hardware Acceleration"
+$STD apt-get -y install {va-driver-all,ocl-icd-libopencl1,intel-opencl-icd,vainfo,intel-gpu-tools}
 if [[ "$CTTYPE" == "0" ]]; then
-  msg_info "Setting Up Hardware Acceleration"
-  $STD apt-get -y install \
-    va-driver-all \
-    ocl-icd-libopencl1 \
-    intel-opencl-icd
-    
-  /bin/chgrp video /dev/dri
-  /bin/chmod 755 /dev/dri
-  /bin/chmod 660 /dev/dri/*
-  msg_ok "Set Up Hardware Acceleration"
+  chgrp video /dev/dri
+  chmod 755 /dev/dri
+  chmod 660 /dev/dri/*
+  $STD adduser $(id -u -n) video
+  $STD adduser $(id -u -n) render
 fi
+msg_ok "Set Up Hardware Acceleration"
 
 msg_info "Installing Tdarr"
 mkdir -p /opt/tdarr
 cd /opt/tdarr
-wget -q https://f000.backblazeb2.com/file/tdarrs/versions/2.00.15/linux_x64/Tdarr_Updater.zip
+RELEASE=$(curl -s https://f000.backblazeb2.com/file/tdarrs/versions.json | grep -oP '(?<="Tdarr_Updater": ")[^"]+' | grep linux_x64 | head -n 1)
+wget -q $RELEASE
 $STD unzip Tdarr_Updater.zip
 rm -rf Tdarr_Updater.zip
 chmod +x Tdarr_Updater
 ./Tdarr_Updater &>/dev/null
+if [[ "$CTTYPE" == "0" ]]; then
+  sed -i -e 's/^sgx:x:104:$/render:x:104:root/' -e 's/^render:x:106:root$/sgx:x:106:/' /etc/group
+else
+  sed -i -e 's/^sgx:x:104:$/render:x:104:/' -e 's/^render:x:106:$/sgx:x:106:/' /etc/group
+fi
+
 msg_ok "Installed Tdarr"
 
 msg_info "Creating Service"
@@ -93,6 +99,6 @@ customize
 
 msg_info "Cleaning up"
 rm -rf Tdarr_Updater.zip
-$STD apt-get autoremove
-$STD apt-get autoclean
+$STD apt-get -y autoremove
+$STD apt-get -y autoclean
 msg_ok "Cleaned"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -29,7 +29,7 @@ color
 catch_errors
 
 function default_settings() {
-  CT_TYPE="0"
+  CT_TYPE="1"
   PW=""
   CT_ID=$NEXTID
   HN=$NSAPP
@@ -39,6 +39,8 @@ function default_settings() {
   BRG="vmbr0"
   NET="dhcp"
   GATE=""
+  APT_CACHER=""
+  APT_CACHER_IP=""
   DISABLEIP6="no"
   MTU=""
   SD=""
@@ -53,7 +55,32 @@ function default_settings() {
 function update_script() {
 header_info
 if [[ ! -d /opt/linkwarden ]]; then msg_error "No ${APP} Installation Found!"; exit; fi
-msg_error "There is currently no update path available."
+
+RELEASE=$(curl -s https://api.github.com/repos/linkwarden/linkwarden/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
+if [[ "${RELEASE}" != "$(cat /opt/${APP}_version.txt)" ]] || [[ ! -f /opt/${APP}_version.txt ]]; then
+  msg_info "Stopping ${APP}"
+  systemctl stop linkwarden
+  msg_ok "Stopped ${APP}"
+
+  msg_info "Updating ${APP} to ${RELEASE}"
+  cd /opt/linkwarden
+  git pull
+  yarn
+  npx playwright install-deps
+  yarn playwright install
+  yarn prisma generate
+  yarn build
+  yarn prisma migrate deploy
+  echo "${RELEASE}" >/opt/${APP}_version.txt
+  msg_ok "Updated ${APP} to ${RELEASE}"
+
+  msg_info "Starting ${APP}"
+  systemctl start linkwarden
+  msg_ok "Started ${APP}"
+  msg_ok "Updated Successfully"
+else
+  msg_ok "No update required.  ${APP} is already at ${RELEASE}."
+fi
 exit
 }
 

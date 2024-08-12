@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -24,6 +24,7 @@ RELEASE=$(wget -q https://github.com/Jackett/Jackett/releases/latest -O - | grep
 wget -q https://github.com/Jackett/Jackett/releases/download/$RELEASE/Jackett.Binaries.LinuxAMDx64.tar.gz
 tar -xzf Jackett.Binaries.LinuxAMDx64.tar.gz -C /opt
 rm -rf Jackett.Binaries.LinuxAMDx64.tar.gz
+echo "${RELEASE}" >/opt/${APPLICATION}_version.txt
 msg_ok "Installed Jackett"
 
 msg_info "Creating Service"
@@ -39,6 +40,7 @@ Type=simple
 WorkingDirectory=/opt/Jackett
 ExecStart=/bin/sh /opt/Jackett/jackett_launcher.sh
 TimeoutStopSec=30
+Environment="DisableRootWarning=true"
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -49,6 +51,6 @@ motd_ssh
 customize
 
 msg_info "Cleaning up"
-$STD apt-get autoremove
-$STD apt-get autoclean
+$STD apt-get -y autoremove
+$STD apt-get -y autoclean
 msg_ok "Cleaned"

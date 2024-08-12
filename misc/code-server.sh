@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -47,6 +47,7 @@ function error_exit() {
 clear
 header_info
 if command -v pveversion >/dev/null 2>&1; then echo -e "⚠️  Can't Install on Proxmox "; exit; fi
+if [ -e /etc/alpine-release ]; then echo -e "⚠️  Can't Install on Alpine"; exit; fi
 while true; do
     read -p "This will Install ${APP} on $hostname. Proceed(y/n)?" yn
     case $yn in
@@ -67,8 +68,8 @@ function msg_ok() {
 }
 
 msg_info "Installing Dependencies"
+apt-get update &>/dev/null
 apt-get install -y curl &>/dev/null
-apt-get install -y sudo &>/dev/null
 apt-get install -y git &>/dev/null
 msg_ok "Installed Dependencies"
 
@@ -78,17 +79,17 @@ VERSION=$(curl -s https://api.github.com/repos/coder/code-server/releases/latest
 
 msg_info "Installing Code-Server v${VERSION}"
 curl -fOL https://github.com/coder/code-server/releases/download/v$VERSION/code-server_${VERSION}_amd64.deb &>/dev/null
-sudo dpkg -i code-server_${VERSION}_amd64.deb &>/dev/null
+dpkg -i code-server_${VERSION}_amd64.deb &>/dev/null
 rm -rf code-server_${VERSION}_amd64.deb
 mkdir -p ~/.config/code-server/
-sudo systemctl enable --now code-server@$USER &>/dev/null
+systemctl enable -q --now code-server@$USER
 cat <<EOF >~/.config/code-server/config.yaml
 bind-addr: 0.0.0.0:8680
 auth: none
 password: 
 cert: false
 EOF
-sudo systemctl restart code-server@$USER
+systemctl restart code-server@$USER
 msg_ok "Installed Code-Server v${VERSION} on $hostname"
 
 echo -e "${APP} should be reachable by going to the following URL.

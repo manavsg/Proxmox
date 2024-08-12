@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -20,21 +20,16 @@ $STD apt-get install -y gnupg
 $STD apt-get install -y mc
 msg_ok "Installed Dependencies"
 
+msg_info "Setting Up Hardware Acceleration"
+$STD apt-get -y install {va-driver-all,ocl-icd-libopencl1,intel-opencl-icd,vainfo,intel-gpu-tools}
 if [[ "$CTTYPE" == "0" ]]; then
-  msg_info "Setting Up Hardware Acceleration"
-  $STD apt-get -y install \
-    va-driver-all \
-    ocl-icd-libopencl1
-  if [[ ${PCT_OSVERSION} == "20.04" ]]; then 
-  $STD apt-get install -y beignet-opencl-icd
-  else
-  $STD apt-get install -y intel-opencl-icd
-  fi
-  /bin/chgrp video /dev/dri
-  /bin/chmod 755 /dev/dri
-  /bin/chmod 660 /dev/dri/*
-  msg_ok "Set Up Hardware Acceleration"
+  chgrp video /dev/dri
+  chmod 755 /dev/dri
+  chmod 660 /dev/dri/*
+  $STD adduser $(id -u -n) video
+  $STD adduser $(id -u -n) render
 fi
+msg_ok "Set Up Hardware Acceleration"
 
 msg_info "Installing Jellyfin"
 VERSION="$( awk -F'=' '/^VERSION_CODENAME=/{ print $NF }' /etc/os-release )"
@@ -56,12 +51,17 @@ EOF
 # Install Jellyfin using the metapackage (which will fetch jellyfin-server, jellyfin-web, and jellyfin-ffmpeg5)
 $STD apt-get update
 $STD apt-get install -y jellyfin
+if [[ "$CTTYPE" == "0" ]]; then
+  sed -i -e 's/^ssl-cert:x:104:$/render:x:104:root,jellyfin/' -e 's/^render:x:108:root,jellyfin$/ssl-cert:x:108:/' /etc/group
+else
+  sed -i -e 's/^ssl-cert:x:104:$/render:x:104:jellyfin/' -e 's/^render:x:108:jellyfin$/ssl-cert:x:108:/' /etc/group
+fi
 msg_ok "Installed Jellyfin"
 
 motd_ssh
 customize
 
 msg_info "Cleaning up"
-$STD apt-get autoremove
-$STD apt-get autoclean
+$STD apt-get -y autoremove
+$STD apt-get -y autoclean
 msg_ok "Cleaned"

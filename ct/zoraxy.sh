@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -19,8 +19,8 @@ EOF
 header_info
 echo -e "Loading..."
 APP="Zoraxy"
-var_disk="4"
-var_cpu="2"
+var_disk="6"
+var_cpu="4"
 var_ram="2048"
 var_os="debian"
 var_version="12"
@@ -39,6 +39,8 @@ function default_settings() {
   BRG="vmbr0"
   NET="dhcp"
   GATE=""
+  APT_CACHER=""
+  APT_CACHER_IP=""
   DISABLEIP6="no"
   MTU=""
   SD=""
@@ -53,7 +55,18 @@ function default_settings() {
 function update_script() {
 header_info
 if [[ ! -d /opt/zoraxy/src ]]; then msg_error "No ${APP} Installation Found!"; exit; fi
-msg_error "There is currently no update path available."
+msg_info "Updating $APP"
+systemctl stop zoraxy
+cd /opt/zoraxy/src
+systemctl stop zoraxy
+if git pull | grep -q 'Already up to date.'; then
+  msg_ok "Already up to date. No update required."
+else
+  go mod tidy
+  go build
+  msg_ok "Updated $APP"
+fi
+systemctl start zoraxy
 exit
 }
 
@@ -61,6 +74,9 @@ start
 build_container
 description
 
+msg_info "Setting Container to Normal Resources"
+pct set $CTID -cores 2
+msg_ok "Set Container to Normal Resources"
 msg_ok "Completed Successfully!\n"
 echo -e "${APP} should be reachable by going to the following URL.
          ${BL}http://${IP}:8000${CL} \n"

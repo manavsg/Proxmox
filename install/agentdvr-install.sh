@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -22,6 +22,7 @@ $STD apt-get install -y apt-transport-https
 $STD apt-get install -y alsa-utils
 $STD apt-get install -y libxext-dev
 $STD apt-get install -y fontconfig
+$STD apt-get install -y libva-drm2
 msg_ok "Installed Dependencies"
 
 msg_info "Installing AgentDVR"
@@ -35,7 +36,7 @@ chmod +x ./Agent
 msg_ok "Installed AgentDVR"
 
 msg_info "Creating Service"
-cat <<EOF >/etc/systemd/system/agentdvr.service
+cat <<EOF >/etc/systemd/system/AgentDVR.service
 [Unit]
 Description=AgentDVR
 
@@ -50,13 +51,13 @@ RestartSec=5
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable -q --now agentdvr.service
+systemctl enable -q --now AgentDVR.service
 msg_ok "Created Service"
 
 motd_ssh
 customize
 
 msg_info "Cleaning up"
-$STD apt-get autoremove
-$STD apt-get autoclean
+$STD apt-get -y autoremove
+$STD apt-get -y autoclean
 msg_ok "Cleaned"
